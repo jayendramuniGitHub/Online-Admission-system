@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #8cb4ef;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #007bff, #ff4081, #34c38f, #ffcc00, #6f42c1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form input, form button {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li span, li a {
+            font-weight: bold;
+        }
+
+        .accepted {
+            color: rgb(21, 177, 68);
+        }
+
+        .rejected {
+            color: red;
+        }
+
+        .notification a, .application a {
+            background-color: #28a745;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .notification a:hover, .application a:hover {
+            background-color: #218838;
+        }
+
+        .notification a, .application a {
+            font-size: 0.9em;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                notification.addEventListener('click', (e) => {
+                    if (confirm('Are you sure you want to manage this application?')) {
+                        return true;
+                    } else {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <h2>Add Course</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Course</button>
+        </form>
+
+        <h2>Notifications</h2>
+        <ul>
+            {% for notification in notifications %}
+            <li class="notification">
+                {{ notification.message }}
+                {% if "applied for" in notification.message %}
+                    <a href="{% url 'manage_application_by_id' notification.student.courseapplication_set.first.id %}">Manage Application</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Applications</h2>
+        <ul>
+            {% for application in applications %}
+            <li class="application">
+                {{ application.student.user.username }} applied for {{ application.course.title }}
+                {% if application.accepted %}
+                    <span class="accepted">Accepted</span>
+                {% elif application.rejected %}
+                    <span class="rejected">Rejected</span>
+                {% else %}
+                    <a href="{% url 'manage_application_by_id' application.id %}">Manage Application</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

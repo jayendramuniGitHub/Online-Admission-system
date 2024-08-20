@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #333636;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #007bff, #ff4081, #34c38f, #ffcc00, #6f42c1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (e) => {
+                if (!confirm('Are you sure you want to apply for this course?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Dashboard</h2>
+        
+        <h3>Available Courses</h3>
+        <ul>
+            {% for course in courses %}
+                <li>
+                    <strong>{{ course.title }}</strong> - {{ course.description }}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Apply for a Course</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Apply</button>
+        </form>
+        
+        <h3>Notifications</h3>
+        <ul>
+            {% for notification in notifications %}
+                <li>{{ notification.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

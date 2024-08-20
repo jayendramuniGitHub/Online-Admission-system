@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #62d88b, #ff4081, #5340a7, #ffcc00, #6f42c1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .signup-container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .signup-container h2 {
+            margin-bottom: 1em;
+            color: #333;
+        }
+
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signup-container form input[type="text"],
+        .signup-container form input[type="password"],
+        .signup-container form input[type="email"] {
+            padding: 0.75em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .signup-container form button {
+            padding: 0.75em;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .signup-container form button:hover {
+            background-color: #218838;
+        }
+
+        .signup-container p {
+            margin-top: 1em;
+            color: #666;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-weight: bold;
+            margin-top: 1em;
+        }
+
+        /* Add some animations */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+            const errorMessage = document.querySelector(".error-message");
+
+            form.addEventListener("submit", function(event) {
+                errorMessage.textContent = "";
+                let isValid = true;
+                const inputs = form.querySelectorAll("input");
+
+                inputs.forEach(input => {
+                    if (input.value.trim() === "") {
+                        isValid = false;
+                        input.style.borderColor = "red";
+                    } else {
+                        input.style.borderColor = "#ccc";
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    errorMessage.textContent = "Please fill in all fields.";
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="signup-container fade-in">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% else %}
+        <p class="error-message"></p>
+        {% endif %}
+    </div>
+</body>
+</html>

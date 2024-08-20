@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa; /* Light blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 1em;
+            color: #00796b; /* Teal color */
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-container form input[type="text"],
+        .login-container form input[type="password"] {
+            padding: 0.75em;
+            margin-bottom: 1em;
+            border: 1px solid #bdbdbd; /* Grey border */
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .login-container form button {
+            padding: 0.75em;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(45deg, #ff4081, #ff80ab); /* Pink gradient */
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-container form button:hover {
+            background: linear-gradient(45deg, #f50057, #ff4081); /* Darker pink gradient on hover */
+        }
+
+        .login-container p {
+            margin-top: 1em;
+            color: #616161; /* Dark grey text */
+        }
+
+        .login-container p a {
+            color: #ff4081; /* Pink link */
+            text-decoration: none;
+        }
+
+        .login-container p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add some animations */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container fade-in">
+        <h2>Student Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+    </div>
+</body>
+</html>
